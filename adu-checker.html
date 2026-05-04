@@ -6,7 +6,7 @@
 <title>ADU Checker – Blackstone Construction</title>
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#fff}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;background:#fff;color:#1a1a1a}
 .hd{background:#1a2332;padding:22px 20px 20px}
 .hd h1{font-size:19px;font-weight:500;color:#f0ede8;margin-bottom:4px}
 .hd p{font-size:12px;color:#8a9bb0}
@@ -14,20 +14,19 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .sf{display:flex;gap:8px}
 .si{flex:1;padding:11px 14px;border-radius:8px;border:2px solid transparent;font-size:14px;outline:none}
 .si:focus{border-color:#4a9eff}
-.sk{padding:0 18px;height:44px;background:#EF9F27;color:#412402;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer}
-.sk:disabled{opacity:.4;cursor:default}
-#spin{display:none;padding:28px 20px;text-align:center}
-.wh{width:26px;height:26px;border:3px solid #e0e0e0;border-top-color:#1a2332;border-radius:50%;animation:sp .65s linear infinite;margin:0 auto 8px}
-@keyframes sp{to{transform:rotate(360deg)}}
+.sk{padding:0 20px;height:44px;background:#EF9F27;color:#412402;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;white-space:nowrap}
+.sk:hover{opacity:.88}
 #er{display:none;margin:12px 20px;padding:10px 14px;background:#fff0f0;border:1px solid #f09595;border-radius:8px;font-size:13px;color:#7a1f1f}
-#rs{display:none}
+#rs{display:none;padding-bottom:8px}
 .pb{background:#f2f1ec;padding:12px 20px;display:flex;gap:10px;align-items:flex-start}
-.pp{width:28px;height:28px;background:#1a2332;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:12px;color:#f0ede8;flex-shrink:0}
-.pa{font-size:13px;font-weight:500;color:#1a1a1a;margin-bottom:4px}
+.pp{width:28px;height:28px;background:#1a2332;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:13px;color:#f0ede8;flex-shrink:0;margin-top:1px}
+.pa{font-size:13px;font-weight:500;margin-bottom:4px}
 .ts{display:flex;flex-wrap:wrap;gap:4px}
 .tg{font-size:10px;padding:2px 8px;background:#fff;border:.5px solid #ccc;border-radius:10px;color:#555}
 .vd{margin:14px 20px;border-radius:10px;padding:14px 16px;border:1.5px solid}
-.vd.pass{background:#edf7e0;border-color:#8dc44a}.vd.warn{background:#fef5e6;border-color:#f5c842}.vd.fail{background:#fff0f0;border-color:#f09090}
+.vd.pass{background:#edf7e0;border-color:#8dc44a}
+.vd.warn{background:#fef5e6;border-color:#f5c842}
+.vd.fail{background:#fff0f0;border-color:#f09090}
 .vl{font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;margin-bottom:3px}
 .vd.pass .vl{color:#3a6b10}.vd.warn .vl{color:#634005}.vd.fail .vl{color:#7a1f1f}
 .vt{font-size:17px;font-weight:600}
@@ -35,7 +34,7 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .vs{font-size:12px;margin-top:3px;line-height:1.5}
 .vd.pass .vs{color:#3a6b10}.vd.warn .vs{color:#854f0b}.vd.fail .vs{color:#9a3030}
 .vps{display:flex;gap:12px;margin-top:9px;padding-top:9px;border-top:.5px solid rgba(0,0,0,.08);font-size:11px;font-weight:500}
-.vps .p{color:#265009}.vps .w{color:#634005}.vps .f{color:#7a1f1f}
+.vp{color:#265009}.vw{color:#634005}.vf{color:#7a1f1f}
 .sg{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:0 20px 14px}
 .sc{background:#f7f6f2;border-radius:8px;padding:12px 14px}
 .sl{font-size:10px;text-transform:uppercase;letter-spacing:.05em;color:#999;margin-bottom:3px}
@@ -45,19 +44,23 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
 .ch{font-size:11px;color:#999;margin-bottom:7px}
 .ci{display:flex;gap:9px;align-items:flex-start;border-radius:8px;padding:9px 11px;border:.5px solid;margin-bottom:6px}
 .ci:last-child{margin-bottom:0}
-.ci.pass{background:#edf7e0;border-color:#b5d97a}.ci.warn{background:#fef5e6;border-color:#f5d67a}.ci.fail{background:#fff0f0;border-color:#f0a0a0}
+.ci.pass{background:#edf7e0;border-color:#b5d97a}
+.ci.warn{background:#fef5e6;border-color:#f5d67a}
+.ci.fail{background:#fff0f0;border-color:#f0a0a0}
 .ii{width:17px;height:17px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:9px;font-weight:700;flex-shrink:0;margin-top:1px}
-.ci.pass .ii{background:#5a9e1a;color:#fff}.ci.warn .ii{background:#e09020;color:#fff}.ci.fail .ii{background:#d04040;color:#fff}
+.ci.pass .ii{background:#5a9e1a;color:#fff}
+.ci.warn .ii{background:#e09020;color:#fff}
+.ci.fail .ii{background:#d04040;color:#fff}
 .ct{font-size:12px;font-weight:600}
 .ci.pass .ct{color:#265009}.ci.warn .ct{color:#3f2602}.ci.fail .ct{color:#7a1f1f}
 .cd{font-size:11px;margin-top:2px;line-height:1.5}
 .ci.pass .cd{color:#3a6b10}.ci.warn .cd{color:#7a4e10}.ci.fail .cd{color:#9a3030}
 .cn{margin:0 20px 12px;background:#e8f0fb;border:.5px solid #aac4f0;border-radius:8px;padding:9px 12px;font-size:11px;color:#1a4080;line-height:1.6}
 .dc{margin:0 20px 12px;font-size:10px;color:#bbb;background:#f7f6f2;border-radius:8px;padding:8px 11px;line-height:1.7}
-.cta{padding:0 20px 24px}
-.cb{width:100%;padding:13px;background:#1a2332;color:#f0ede8;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:6px}
-.cb:hover{opacity:.88}
-.cn2{font-size:11px;color:#bbb;text-align:center}
+.ctaw{padding:0 20px 24px}
+.ctab{width:100%;padding:13px;background:#1a2332;color:#f0ede8;border:none;border-radius:8px;font-size:14px;font-weight:600;cursor:pointer;margin-bottom:6px}
+.ctab:hover{opacity:.88}
+.ctan{font-size:11px;color:#bbb;text-align:center}
 </style>
 </head>
 <body>
@@ -66,143 +69,133 @@ body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;backgrou
   <h1>Can I build an ADU on my property?</h1>
   <p>Enter any California address — instant check based on CA state law</p>
 </div>
-
 <div class="sb">
   <div class="sf">
-    <input id="ai" class="si" type="text" placeholder="e.g. 3357 Guluzzo Dr, San Jose, CA" autocomplete="off">
-    <button id="ab" class="sk" onclick="go()">Check</button>
+    <input id="ai" class="si" type="text" placeholder="e.g. 3357 Guluzzo Dr, San Jose, CA 95148" autocomplete="off">
+    <button class="sk" onclick="go()">Check eligibility</button>
   </div>
 </div>
-
-<div id="spin"><div class="wh"></div><div style="font-size:13px;color:#666">Checking…</div></div>
 <div id="er"></div>
 <div id="rs"></div>
 
 <script>
-// ── Geocode via fetch (no Maps JS needed) ──────────────────
-var KEY = 'AIzaSyAAVLJN8u5lcaIv9_S0iLZt17lPVPodjWw';
+// ── Parse address from plain text (zero API calls) ─────────
+function parseAddress(raw) {
+  var s = raw.trim();
 
-function go() {
-  var addr = document.getElementById('ai').value.trim();
-  if (!addr) { showErr('Please enter an address.'); return; }
-
-  // Auto-append CA if no state given
-  if (!/\bCA\b|california/i.test(addr) && !/,\s*[A-Z]{2}\s*\d/.test(addr)) {
-    addr = addr + ', CA';
+  // Detect state
+  var stateMatch = s.match(/\b([A-Z]{2})\b(?:\s+\d{5})?(?:\s*$|,)/);
+  var state = stateMatch ? stateMatch[1] : '';
+  if (!state) {
+    if (/california/i.test(s)) state = 'CA';
   }
 
-  setLoad(true);
-  hide('rs'); hide('er');
+  // Detect zip
+  var zipMatch = s.match(/\b(\d{5})\b/);
+  var zip = zipMatch ? zipMatch[1] : '';
 
-  var url = 'https://maps.googleapis.com/maps/api/geocode/json'
-    + '?address=' + encodeURIComponent(addr)
-    + '&key=' + KEY;
-
-  fetch(url)
-    .then(function(r){ return r.json(); })
-    .then(function(data){
-      setLoad(false);
-      if (data.status !== 'OK' || !data.results || !data.results.length) {
-        showErr('Address not found. Try adding city and state, e.g. "San Jose, CA".');
-        return;
-      }
-      var geo = parseGeo(data.results[0]);
-      render(evaluate(geo));
-    })
-    .catch(function(e){
-      setLoad(false);
-      // CORS fallback — use manual evaluation based on typed address
-      var geo = guessGeo(document.getElementById('ai').value.trim());
-      render(evaluate(geo));
-    });
-}
-
-// If fetch is blocked by CORS, guess from typed text
-function guessGeo(addr) {
-  var city = '', state = 'CA', zip = '';
-  var m = addr.match(/([A-Za-z\s]+),?\s*CA/i);
-  if (m) city = m[1].trim().split(',').pop().trim();
-  var zm = addr.match(/\b(\d{5})\b/);
-  if (zm) zip = zm[1];
-  return { formatted: addr, lat: 0, lng: 0, street: addr, city: city, state: state, zip: zip, guessed: true };
-}
-
-function parseGeo(r) {
-  function get(type) {
-    var c = r.address_components.find(function(x){ return x.types.indexOf(type) >= 0; });
-    return c ? c.long_name : '';
+  // Detect city — text between last comma before state and state
+  var city = '';
+  var parts = s.split(',').map(function(p){ return p.trim(); });
+  if (parts.length >= 2) {
+    // last part often "CA 95148" or "California"
+    // second-to-last is city
+    var cityRaw = parts[parts.length - (parts.length >= 3 ? 2 : 1)];
+    city = cityRaw.replace(/\b[A-Z]{2}\b/, '').replace(/\d{5}/, '').trim();
   }
-  function getS(type) {
-    var c = r.address_components.find(function(x){ return x.types.indexOf(type) >= 0; });
-    return c ? c.short_name : '';
-  }
+
+  // Street = first part
+  var street = parts[0] || s;
+
+  // Is it a residential street type?
+  var isRes = /\b(dr|drive|st|street|ave|avenue|blvd|boulevard|way|ct|court|ln|lane|rd|road|pl|place|cir|circle|ter|terrace|loop|walk|path|run|pkwy|parkway)\b/i.test(street);
+
   return {
-    formatted: r.formatted_address,
-    lat: r.geometry.location.lat,
-    lng: r.geometry.location.lng,
-    street: (get('street_number') + ' ' + get('route')).trim(),
-    city: get('locality') || get('sublocality') || '',
-    state: getS('administrative_area_level_1'),
-    zip: get('postal_code'),
-    guessed: false
+    formatted: s,
+    street: street,
+    city: city,
+    state: state,
+    zip: zip,
+    isRes: isRes
   };
 }
 
-// ── ADU rules (CA state law, no external API) ─────────────
-var SVC = ['san jose','santa clara','sunnyvale','cupertino','milpitas','fremont',
-  'campbell','los gatos','saratoga','los altos','mountain view','palo alto',
-  'morgan hill','gilroy','burlingame','san mateo','redwood city'];
+// Bay Area cities Blackstone serves
+var SVC_AREA = ['san jose','santa clara','sunnyvale','cupertino','milpitas',
+  'fremont','campbell','los gatos','saratoga','los altos','mountain view',
+  'palo alto','morgan hill','gilroy','burlingame','san mateo','redwood city',
+  'menlo park','atherton','portola valley','woodside','los altos hills'];
+
+// CA zip ranges (rough check)
+function isCAZip(zip) {
+  if (!zip) return true; // benefit of doubt
+  var n = parseInt(zip, 10);
+  return n >= 90001 && n <= 96162;
+}
 
 function evaluate(geo) {
   var checks = [];
-  var city  = (geo.city || '').toLowerCase();
-  var state = (geo.state || '').toUpperCase();
-  var isCA  = state === 'CA';
+  var city  = (geo.city  || '').toLowerCase().trim();
+  var state = (geo.state || '').toUpperCase().trim();
+  var zip   = geo.zip || '';
 
+  // Determine if CA
+  var isCA = state === 'CA' || (!state && isCAZip(zip));
+
+  // 1. California check
   checks.push({
     label: 'California property',
-    status: isCA ? 'pass' : 'fail',
+    status: isCA ? 'pass' : (state ? 'fail' : 'warn'),
     detail: isCA
       ? 'California — AB68 (2020) applies statewide to all residential properties'
-      : (state || 'Non-CA') + ' — Blackstone currently serves California only'
+      : state
+        ? state + ' — Blackstone currently serves California only'
+        : 'State not detected — add ", CA" to your address to confirm'
   });
 
-  var isRes = /\b(dr|st|ave|blvd|way|ct|ln|rd|pl|cir|ter|loop|walk|path|run)\b/i.test(geo.street + ' ' + geo.formatted);
+  // 2. Residential street
   checks.push({
     label: 'Residential address',
-    status: isRes ? 'pass' : 'warn',
-    detail: isRes
-      ? 'Appears residential — all CA residential lots eligible for ADU under AB68'
-      : 'Could not confirm residential use — verify property type'
+    status: geo.isRes ? 'pass' : 'warn',
+    detail: geo.isRes
+      ? 'Residential street type detected — all CA residential lots eligible under AB68'
+      : 'Add full street type (Dr, Ave, Rd…) for better accuracy — assuming residential'
   });
 
+  // 3. CA state law guarantee
   if (isCA) {
     checks.push({
       label: 'ADU right guaranteed by CA law',
       status: 'pass',
-      detail: 'California AB68 gives every residential owner the legal right to 1 detached ADU + 1 JADU. Cities cannot ban them.'
+      detail: 'CA AB68 gives every residential owner the right to 1 detached ADU (up to 1,200 sq ft) + 1 JADU (500 sq ft). Cities and HOAs cannot ban them.'
     });
   }
 
+  // 4. Setback
   checks.push({
-    label: 'Setback requirement',
+    label: 'Rear / side setback',
     status: 'warn',
-    detail: 'CA law: 4 ft minimum rear & side setback — exact clearance confirmed at free site visit'
+    detail: 'CA law requires minimum 4 ft rear & side setback for detached ADU — confirmed at free site visit'
   });
 
-  var inSvc = SVC.some(function(c){ return city.indexOf(c) >= 0; });
+  // 5. Service area
+  var inSvc = SVC_AREA.some(function(c){ return city.indexOf(c) >= 0 || c.indexOf(city) >= 0; });
+  var cityLabel = geo.city || city || 'Your area';
   checks.push({
-    label: 'Service area',
-    status: inSvc ? 'pass' : 'warn',
+    label: 'Blackstone service area',
+    status: city ? (inSvc ? 'pass' : 'warn') : 'warn',
     detail: inSvc
-      ? (geo.city || city) + ' — within Blackstone\'s Bay Area service area'
-      : (geo.city || 'This area') + ' — contact us to confirm availability'
+      ? cityLabel + ' — within Blackstone\'s Bay Area service area ✓'
+      : cityLabel
+        ? cityLabel + ' — contact us to confirm we serve your area'
+        : 'Add city to address for service area check'
   });
 
+  // 6. HOA
   checks.push({
     label: 'HOA restrictions',
     status: 'warn',
-    detail: 'HOAs cannot legally ban ADUs in CA — may set design standards. Check your CC&Rs.'
+    detail: 'HOAs cannot ban ADUs in CA under state law — may set design standards. Check your CC&Rs.'
   });
 
   var nF = checks.filter(function(c){ return c.status==='fail'; }).length;
@@ -210,60 +203,87 @@ function evaluate(geo) {
   var nP = checks.filter(function(c){ return c.status==='pass'; }).length;
 
   var ov, os, ob;
-  if (nF===0 && nW<=1) { ov='Likely eligible for ADU'; os='pass'; ob='Key requirements met under CA state law. A free site visit confirms exact sizing.'; }
-  else if (nF===0)     { ov='Eligible — a few items to verify'; os='warn'; ob='No hard blockers. Some items need confirmation — contact us for a free review.'; }
-  else                 { ov='May have eligibility issues'; os='fail'; ob='One or more requirements may not be met. Contact us to explore your options.'; }
+  if (nF === 0 && nW <= 1) {
+    ov = 'Likely eligible for ADU'; os = 'pass';
+    ob = 'Your property meets key requirements under CA state law. A free site visit confirms exact sizing.';
+  } else if (nF === 0) {
+    ov = 'Eligible — a few items to verify'; os = 'warn';
+    ob = 'No hard blockers. Some items need a quick review — book a free call with Blackstone.';
+  } else {
+    ov = 'May have eligibility issues'; os = 'fail';
+    ob = 'One or more requirements may not be met. Contact us to explore your options.';
+  }
 
   return { geo:geo, checks:checks, nP:nP, nW:nW, nF:nF, ov:ov, os:os, ob:ob };
 }
 
+function go() {
+  var raw = document.getElementById('ai').value.trim();
+  if (!raw) { showErr('Please enter a property address.'); return; }
+
+  hide('er'); hide('rs');
+
+  var geo    = parseAddress(raw);
+  var result = evaluate(geo);
+  render(result);
+}
+
 function render(r) {
-  var ic = {pass:'✓',warn:'!',fail:'✗'};
-  var tags = [r.geo.city, r.geo.state==='CA'?'California':r.geo.state, r.geo.zip]
-    .filter(Boolean).map(function(t){ return '<span class="tg">'+t+'</span>'; }).join('');
+  var ic = { pass:'✓', warn:'!', fail:'✗' };
+  var tags = [r.geo.city, r.geo.state||'CA', r.geo.zip]
+    .filter(Boolean)
+    .map(function(t){ return '<span class="tg">'+t+'</span>'; }).join('');
 
   var cks = r.checks.map(function(c){
-    return '<div class="ci '+c.status+'"><div class="ii">'+ic[c.status]+'</div>'
-      +'<div><div class="ct">'+c.label+'</div><div class="cd">'+c.detail+'</div></div></div>';
+    return '<div class="ci '+c.status+'">'
+      +'<div class="ii">'+ic[c.status]+'</div>'
+      +'<div><div class="ct">'+c.label+'</div>'
+      +'<div class="cd">'+c.detail+'</div></div></div>';
   }).join('');
-
-  var note = r.geo.guessed ? '<div style="margin:0 20px 10px;padding:8px 12px;background:#fef5e6;border:.5px solid #f5c842;border-radius:8px;font-size:11px;color:#634005;">⚠️ Could not verify address — result is based on CA state law defaults. A site visit will confirm details.</div>' : '';
 
   document.getElementById('rs').innerHTML =
     '<div class="pb"><div class="pp">📍</div><div>'
-      +'<div class="pa">'+(r.geo.formatted||r.geo.city||'Your property')+'</div>'
-      +'<div class="ts">'+tags+'</div></div></div>'
+      +'<div class="pa">'+r.geo.formatted+'</div>'
+      +'<div class="ts">'+tags+'</div>'
+    +'</div></div>'
+
     +'<div class="vd '+r.os+'">'
       +'<div class="vl">Overall result</div>'
       +'<div class="vt">'+r.ov+'</div>'
       +'<div class="vs">'+r.ob+'</div>'
-      +'<div class="vps"><span class="p">'+r.nP+' passed</span><span class="w">'+r.nW+' to verify</span><span class="f">'+r.nF+' blocked</span></div>'
+      +'<div class="vps">'
+        +'<span class="vp">'+r.nP+' passed</span>'
+        +'<span class="vw">'+r.nW+' to verify</span>'
+        +'<span class="vf">'+r.nF+' blocked</span>'
+      +'</div>'
     +'</div>'
+
     +'<div class="sg">'
       +'<div class="sc"><div class="sl">Max detached ADU</div><div class="sv">1,200 sq ft</div><div class="sn">CA AB68 state limit</div></div>'
       +'<div class="sc"><div class="sl">Max JADU</div><div class="sv">500 sq ft</div><div class="sn">Inside existing home</div></div>'
     +'</div>'
+
     +'<div class="cw"><div class="ch">Eligibility checks ('+r.checks.length+')</div>'+cks+'</div>'
-    + note
-    +'<div class="cn">📋 Under CA AB68 (2020), all residential owners have the <strong>legal right to build an ADU</strong>. Cities and HOAs cannot ban them.</div>'
-    +'<div class="dc">Based on CA state ADU law. Local ordinances may add design requirements. For informational purposes only.</div>'
-    +'<div class="cta">'
-      +'<button class="cb" onclick="window.open(\'https://www.blackstonednb.com/contact\',\'_blank\')">Book free consultation — (408) 785-9999</button>'
-      +'<div class="cn2">30-min call · No obligation · Same-week availability</div>'
+
+    +'<div class="cn">📋 Under CA AB68 (2020), all residential owners have the <strong>legal right to build an ADU</strong>. Cities and HOAs cannot ban them outright.</div>'
+
+    +'<div class="dc">Based on CA state ADU law. Local ordinances may add design requirements. For informational purposes only — not a permit approval.</div>'
+
+    +'<div class="ctaw">'
+      +'<button class="ctab" onclick="window.open(\'https://www.blackstonednb.com/contact\',\'_blank\')">'
+        +'Book free consultation — (408) 785-9999'
+      +'</button>'
+      +'<div class="ctan">30-min call · No obligation · Same-week availability</div>'
     +'</div>';
 
   show('rs');
 }
 
-// Enter key
-document.getElementById('ai').addEventListener('keydown', function(e){ if(e.key==='Enter') go(); });
+// Enter key support
+document.getElementById('ai').addEventListener('keydown', function(e){
+  if (e.key === 'Enter') go();
+});
 
-// Helpers
-function setLoad(on){
-  document.getElementById('spin').style.display = on?'block':'none';
-  document.getElementById('ab').disabled = on;
-  document.getElementById('ab').textContent = on?'…':'Check';
-}
 function show(id){ document.getElementById(id).style.display='block'; }
 function hide(id){ document.getElementById(id).style.display='none'; }
 function showErr(m){ var e=document.getElementById('er'); e.textContent=m; e.style.display='block'; }
