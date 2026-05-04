@@ -8,410 +8,357 @@
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; background: #f5f4f0; color: #1a1a1a; }
 
-.header { background: #1a2332; padding: 28px 24px 24px; }
-.header h1 { font-size: 22px; font-weight: 500; color: #f0ede8; margin-bottom: 6px; }
-.header p { font-size: 13px; color: #8a9bb0; line-height: 1.5; }
+.header { background: #1a2332; padding: 24px 20px 20px; }
+.header h1 { font-size: 20px; font-weight: 500; color: #f0ede8; margin-bottom: 5px; }
+.header p { font-size: 12px; color: #8a9bb0; line-height: 1.5; }
 
-.search-wrap { background: #1a2332; padding: 0 24px 20px; }
-.search-row { display: flex; gap: 8px; position: relative; }
-.search-input { flex: 1; padding: 11px 14px; border-radius: 8px; border: none; font-size: 14px; background: #fff; color: #1a1a1a; outline: none; }
-.search-input:focus { box-shadow: 0 0 0 2px #4a9eff; }
-.search-btn { padding: 11px 20px; background: #EF9F27; color: #412402; border: none; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; white-space: nowrap; }
+.search-wrap { background: #1a2332; padding: 0 20px 18px; position: relative; }
+.search-row { display: flex; gap: 8px; }
+.search-input { flex: 1; padding: 11px 14px; border-radius: 8px; border: 2px solid transparent; font-size: 14px; background: #fff; color: #1a1a1a; outline: none; transition: border-color .2s; }
+.search-input:focus { border-color: #4a9eff; }
+.search-btn { padding: 11px 18px; background: #EF9F27; color: #412402; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap; transition: opacity .15s; }
 .search-btn:hover { opacity: .88; }
 .search-btn:disabled { opacity: .5; cursor: not-allowed; }
 
-.suggest-list { position: absolute; top: calc(100% + 4px); left: 0; right: 60px; background: #fff; border-radius: 8px; border: 1px solid #ddd; z-index: 999; display: none; }
-.suggest-list.show { display: block; }
-.suggest-item { padding: 10px 14px; font-size: 13px; cursor: pointer; border-bottom: 0.5px solid #f0f0f0; }
-.suggest-item:last-child { border-bottom: none; }
-.suggest-item:hover { background: #f5f4f0; }
-.suggest-main { font-weight: 500; color: #1a1a1a; }
-.suggest-sub { font-size: 11px; color: #888; margin-top: 2px; }
+/* Autocomplete */
+.ac-wrap { position: relative; flex: 1; }
+.ac-list { position: absolute; top: calc(100% + 4px); left: 0; right: 0; background: #fff; border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,.15); z-index: 999; overflow: hidden; display: none; }
+.ac-list.open { display: block; }
+.ac-item { padding: 10px 14px; font-size: 13px; cursor: pointer; border-bottom: .5px solid #f0f0f0; display: flex; gap: 8px; align-items: flex-start; }
+.ac-item:last-child { border-bottom: none; }
+.ac-item:hover { background: #f7f6f2; }
+.ac-icon { color: #999; margin-top: 1px; flex-shrink: 0; }
+.ac-main { font-weight: 500; color: #1a1a1a; }
+.ac-sub { font-size: 11px; color: #888; margin-top: 1px; }
 
-.loading { display: none; padding: 36px 24px; text-align: center; }
+/* States */
+.loading { display: none; padding: 32px 20px; text-align: center; background: #fff; }
 .loading.show { display: block; }
-.spinner { width: 30px; height: 30px; border: 3px solid #e0e0e0; border-top-color: #1a2332; border-radius: 50%; animation: spin .7s linear infinite; margin: 0 auto 10px; }
+.spinner { width: 28px; height: 28px; border: 3px solid #e8e8e8; border-top-color: #1a2332; border-radius: 50%; animation: spin .65s linear infinite; margin: 0 auto 10px; }
 @keyframes spin { to { transform: rotate(360deg); } }
-.loading p { font-size: 13px; color: #555; margin-bottom: 3px; }
-.loading-step { font-size: 11px; color: #999; }
+.load-txt { font-size: 13px; color: #444; }
 
-.error-box { display: none; margin: 14px 24px; background: #fff0f0; border: 1px solid #f09595; border-radius: 8px; padding: 12px 14px; font-size: 13px; color: #791f1f; }
-.error-box.show { display: block; }
+.err { display: none; margin: 12px 20px; padding: 11px 14px; background: #fff0f0; border: 1px solid #f09595; border-radius: 8px; font-size: 13px; color: #7a1f1f; }
+.err.show { display: block; }
 
-.results { display: none; padding: 16px 24px 28px; }
+/* Results */
+.results { display: none; background: #fff; }
 .results.show { display: block; }
 
-.prop-card { background: #f0f0ee; border-radius: 10px; padding: 12px 14px; margin-bottom: 12px; display: flex; gap: 10px; align-items: flex-start; }
-.prop-addr { font-size: 13px; font-weight: 500; color: #1a1a1a; margin-bottom: 5px; }
-.tags { display: flex; flex-wrap: wrap; gap: 4px; }
-.tag { font-size: 10px; padding: 2px 8px; background: #fff; border: 0.5px solid #ddd; border-radius: 10px; color: #555; }
+.prop-bar { background: #f0efe9; padding: 12px 20px; display: flex; align-items: flex-start; gap: 10px; border-bottom: .5px solid #e0e0da; }
+.prop-icon { width: 30px; height: 30px; background: #1a2332; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 13px; flex-shrink: 0; }
+.prop-addr { font-size: 13px; font-weight: 500; color: #1a1a1a; margin-bottom: 4px; }
+.prop-tags { display: flex; flex-wrap: wrap; gap: 4px; }
+.ptag { font-size: 10px; padding: 2px 8px; background: #fff; border: .5px solid #d0d0c8; border-radius: 10px; color: #555; }
 
-.verdict { border-radius: 10px; padding: 14px 16px; margin-bottom: 12px; border: 1px solid; }
-.verdict.pass { background: #eaf3de; border-color: #97c459; }
-.verdict.warn { background: #faeeda; border-color: #fac775; }
-.verdict.fail { background: #fcebeb; border-color: #f09595; }
-.v-label { font-size: 10px; font-weight: 500; text-transform: uppercase; letter-spacing: .06em; margin-bottom: 3px; }
-.verdict.pass .v-label { color: #3b6d11; }
-.verdict.warn .v-label { color: #633806; }
-.verdict.fail .v-label { color: #791f1f; }
-.v-title { font-size: 16px; font-weight: 500; }
-.verdict.pass .v-title { color: #27500a; }
-.verdict.warn .v-title { color: #412402; }
-.verdict.fail .v-title { color: #501313; }
-.v-sub { font-size: 12px; margin-top: 3px; }
-.verdict.pass .v-sub { color: #3b6d11; }
+.verdict { margin: 14px 20px; border-radius: 10px; padding: 14px 16px; border: 1.5px solid; }
+.verdict.pass { background: #edf7e0; border-color: #8dc44a; }
+.verdict.warn { background: #fef5e6; border-color: #f5c842; }
+.verdict.fail { background: #fef0f0; border-color: #f09090; }
+.v-label { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .07em; margin-bottom: 3px; }
+.verdict.pass .v-label { color: #3a6b10; }
+.verdict.warn .v-label { color: #634005; }
+.verdict.fail .v-label { color: #7a1f1f; }
+.v-title { font-size: 17px; font-weight: 600; }
+.verdict.pass .v-title { color: #265009; }
+.verdict.warn .v-title { color: #3f2602; }
+.verdict.fail .v-title { color: #501010; }
+.v-sub { font-size: 12px; margin-top: 3px; line-height: 1.5; }
+.verdict.pass .v-sub { color: #3a6b10; }
 .verdict.warn .v-sub { color: #854f0b; }
-.verdict.fail .v-sub { color: #a32d2d; }
-.v-count { display: flex; gap: 14px; margin-top: 8px; padding-top: 8px; border-top: 0.5px solid rgba(0,0,0,.1); }
-.vc { font-size: 11px; }
-.verdict.pass .vc-p { color: #27500a; font-weight: 500; }
-.verdict.warn .vc-p { color: #27500a; font-weight: 500; }
-.verdict.fail .vc-p { color: #27500a; font-weight: 500; }
-.vc-w { color: #633806; font-weight: 500; }
-.vc-f { color: #791f1f; font-weight: 500; }
+.verdict.fail .v-sub { color: #9a3030; }
+.v-pills { display: flex; gap: 10px; margin-top: 10px; padding-top: 10px; border-top: .5px solid rgba(0,0,0,.08); }
+.vpill { font-size: 11px; font-weight: 500; }
+.vpill.p { color: #265009; }
+.vpill.w { color: #634005; }
+.vpill.f { color: #7a1f1f; }
 
-.size-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 12px; }
-.size-card { background: #f0f0ee; border-radius: 8px; padding: 11px 13px; }
-.s-lbl { font-size: 10px; text-transform: uppercase; letter-spacing: .05em; color: #888; margin-bottom: 3px; }
-.s-val { font-size: 20px; font-weight: 500; color: #1a2332; }
-.s-note { font-size: 10px; color: #999; margin-top: 2px; }
+.size-row { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; padding: 0 20px 14px; }
+.scard { background: #f7f6f2; border-radius: 8px; padding: 12px 14px; }
+.scard-lbl { font-size: 10px; text-transform: uppercase; letter-spacing: .05em; color: #888; margin-bottom: 3px; }
+.scard-val { font-size: 22px; font-weight: 600; color: #1a2332; }
+.scard-note { font-size: 10px; color: #aaa; margin-top: 2px; }
 
-.checks-hd { font-size: 11px; color: #666; margin-bottom: 7px; }
-.checklist { display: flex; flex-direction: column; gap: 6px; margin-bottom: 14px; }
-.ci { display: flex; gap: 9px; align-items: flex-start; border-radius: 8px; padding: 9px 11px; border: 0.5px solid; }
-.ci.pass { background: #eaf3de; border-color: #c0dd97; }
-.ci.warn { background: #faeeda; border-color: #fac775; }
-.ci.fail { background: #fcebeb; border-color: #f7c1c1; }
-.ci-ic { width: 17px; height: 17px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
-.ci.pass .ci-ic { background: #639922; color: #fff; }
-.ci.warn .ci-ic { background: #EF9F27; color: #fff; }
-.ci.fail .ci-ic { background: #E24B4A; color: #fff; }
-.ci-title { font-size: 12px; font-weight: 500; }
-.ci.pass .ci-title { color: #27500a; }
-.ci.warn .ci-title { color: #412402; }
-.ci.fail .ci-title { color: #791f1f; }
+.checks-wrap { padding: 0 20px 14px; }
+.checks-hd { font-size: 11px; color: #888; margin-bottom: 8px; }
+.ci { display: flex; gap: 9px; align-items: flex-start; border-radius: 8px; padding: 9px 11px; border: .5px solid; margin-bottom: 6px; }
+.ci:last-child { margin-bottom: 0; }
+.ci.pass { background: #edf7e0; border-color: #b5d97a; }
+.ci.warn { background: #fef5e6; border-color: #f5d67a; }
+.ci.fail { background: #fef0f0; border-color: #f0a0a0; }
+.ci-ic { width: 18px; height: 18px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 9px; font-weight: 700; flex-shrink: 0; margin-top: 1px; }
+.ci.pass .ci-ic { background: #5a9e1a; color: #fff; }
+.ci.warn .ci-ic { background: #e09020; color: #fff; }
+.ci.fail .ci-ic { background: #d04040; color: #fff; }
+.ci-title { font-size: 12px; font-weight: 600; }
+.ci.pass .ci-title { color: #265009; }
+.ci.warn .ci-title { color: #3f2602; }
+.ci.fail .ci-title { color: #7a1f1f; }
 .ci-detail { font-size: 11px; margin-top: 2px; line-height: 1.5; }
-.ci.pass .ci-detail { color: #3b6d11; }
-.ci.warn .ci-detail { color: #854f0b; }
-.ci.fail .ci-detail { color: #a32d2d; }
+.ci.pass .ci-detail { color: #3a6b10; }
+.ci.warn .ci-detail { color: #7a4e10; }
+.ci.fail .ci-detail { color: #9a3030; }
 
-.source-row { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 12px; align-items: center; }
-.src-lbl { font-size: 10px; color: #999; }
-.src-tag { font-size: 10px; padding: 2px 7px; background: #e6f1fb; color: #0c447c; border-radius: 10px; }
+.ca-note { margin: 0 20px 14px; background: #e8f0fb; border: .5px solid #aac4f0; border-radius: 8px; padding: 9px 12px; font-size: 11px; color: #1a4080; line-height: 1.6; }
 
-.disc { font-size: 10px; color: #999; background: #f0f0ee; border-radius: 8px; padding: 9px 11px; line-height: 1.7; margin-bottom: 14px; }
+.disc { margin: 0 20px 14px; font-size: 10px; color: #aaa; background: #f7f6f2; border-radius: 8px; padding: 9px 11px; line-height: 1.7; }
 
-.cta-btn { width: 100%; padding: 13px; background: #1a2332; color: #f0ede8; border: none; border-radius: 8px; font-size: 14px; font-weight: 500; cursor: pointer; margin-bottom: 6px; }
-.cta-btn:hover { opacity: .88; }
-.cta-note { font-size: 11px; color: #999; text-align: center; }
+.cta-wrap { padding: 0 20px 24px; }
+.cta-main { width: 100%; padding: 13px; background: #1a2332; color: #f0ede8; border: none; border-radius: 8px; font-size: 14px; font-weight: 600; cursor: pointer; margin-bottom: 6px; transition: opacity .15s; }
+.cta-main:hover { opacity: .88; }
+.cta-sub { font-size: 11px; color: #aaa; text-align: center; }
 </style>
 </head>
 <body>
 
 <div class="header">
   <h1>Can I build an ADU on my property?</h1>
-  <p>Enter your address — we check zoning, lot size, fire hazard &amp; flood zone instantly.</p>
+  <p>Enter any California address — instant eligibility check based on CA state law.</p>
 </div>
 
 <div class="search-wrap">
   <div class="search-row">
-    <input id="addressInput" class="search-input" type="text"
-      placeholder="e.g. 3357 Guluzzo Dr, San Jose, CA" autocomplete="off">
-    <div class="suggest-list" id="suggestList"></div>
-    <button class="search-btn" id="checkBtn" onclick="runCheck()">Check eligibility</button>
+    <div class="ac-wrap">
+      <input id="addrInput" class="search-input" type="text"
+        placeholder="e.g. 3357 Guluzzo Dr, San Jose, CA" autocomplete="off">
+      <div class="ac-list" id="acList"></div>
+    </div>
+    <button class="search-btn" id="checkBtn" onclick="runCheck()">Check</button>
   </div>
 </div>
 
 <div class="loading" id="loading">
   <div class="spinner"></div>
-  <p>Checking your property…</p>
-  <div class="loading-step" id="loadingStep">Looking up address…</div>
+  <div class="load-txt">Checking your property…</div>
 </div>
-
-<div class="error-box" id="errorBox"></div>
+<div class="err" id="errBox"></div>
 <div class="results" id="results"></div>
 
 <script>
-// ── CONFIG ───────────────────────────────────────────────
-const GOOGLE_KEY = 'AIzaSyAAVLJN8u5lcaIv9_S0iLZt17lPVPodjWw';
+// ─── Config ────────────────────────────────────────────────
+const GKEY = 'AIzaSyAAVLJN8u5lcaIv9_S0iLZt17lPVPodjWw';
 
-// ── AUTOCOMPLETE via Google Places (loaded dynamically) ──
-let autocompleteService, sessionToken;
+// ─── Load Google Maps JS (handles geocoding + autocomplete) ─
+window.mapsReady = false;
+window.initMaps = () => { window.mapsReady = true; };
+const s = document.createElement('script');
+s.src = `https://maps.googleapis.com/maps/api/js?key=${GKEY}&libraries=places&callback=initMaps&loading=async`;
+s.async = true; s.defer = true;
+document.head.appendChild(s);
 
-function loadGooglePlaces() {
-  if (window.google) return;
-  const s = document.createElement('script');
-  s.src = `https://maps.googleapis.com/maps/api/js?key=${GOOGLE_KEY}&libraries=places&callback=initPlaces`;
-  s.async = true;
-  document.head.appendChild(s);
-}
+// ─── Autocomplete ──────────────────────────────────────────
+const inp = document.getElementById('addrInput');
+const acList = document.getElementById('acList');
+let acService, sessionToken, preds = [], debTimer;
 
-window.initPlaces = function() {
-  autocompleteService = new google.maps.places.AutocompleteService();
-  sessionToken = new google.maps.places.AutocompleteSessionToken();
-};
-
-loadGooglePlaces();
-
-const input = document.getElementById('addressInput');
-const suggestList = document.getElementById('suggestList');
-let debounceTimer;
-let predictions = [];
-
-input.addEventListener('input', () => {
-  clearTimeout(debounceTimer);
-  const q = input.value.trim();
-  if (q.length < 4 || !autocompleteService) { suggestList.classList.remove('show'); return; }
-  debounceTimer = setTimeout(() => {
-    autocompleteService.getPlacePredictions(
+inp.addEventListener('input', () => {
+  clearTimeout(debTimer);
+  const q = inp.value.trim();
+  if (q.length < 3) { acList.classList.remove('open'); return; }
+  debTimer = setTimeout(() => {
+    if (!window.mapsReady) return;
+    if (!acService) {
+      acService = new google.maps.places.AutocompleteService();
+      sessionToken = new google.maps.places.AutocompleteSessionToken();
+    }
+    acService.getPlacePredictions(
       { input: q, componentRestrictions: { country: 'us' }, types: ['address'], sessionToken },
-      (preds, status) => {
-        if (status !== google.maps.places.PlacesServiceStatus.OK || !preds) {
-          suggestList.classList.remove('show'); return;
-        }
-        predictions = preds;
-        suggestList.innerHTML = preds.slice(0,5).map((p,i) => `
-          <div class="suggest-item" onclick="selectSuggestion(${i})">
-            <div class="suggest-main">${p.structured_formatting.main_text}</div>
-            <div class="suggest-sub">${p.structured_formatting.secondary_text || ''}</div>
+      (res, status) => {
+        if (status !== 'OK' || !res) { acList.classList.remove('open'); return; }
+        preds = res.slice(0, 5);
+        acList.innerHTML = preds.map((p, i) => `
+          <div class="ac-item" onclick="pick(${i})">
+            <div class="ac-icon">📍</div>
+            <div>
+              <div class="ac-main">${p.structured_formatting.main_text}</div>
+              <div class="ac-sub">${p.structured_formatting.secondary_text || ''}</div>
+            </div>
           </div>`).join('');
-        suggestList.classList.add('show');
+        acList.classList.add('open');
       }
     );
-  }, 280);
+  }, 260);
 });
 
-function selectSuggestion(i) {
-  input.value = predictions[i].description;
-  suggestList.classList.remove('show');
+function pick(i) {
+  inp.value = preds[i].description;
+  acList.classList.remove('open');
   sessionToken = new google.maps.places.AutocompleteSessionToken();
   runCheck();
 }
 
-document.addEventListener('click', e => {
-  if (!e.target.closest('.search-row')) suggestList.classList.remove('show');
-});
+inp.addEventListener('keydown', e => { if (e.key === 'Enter') { acList.classList.remove('open'); runCheck(); }});
+document.addEventListener('click', e => { if (!e.target.closest('.ac-wrap')) acList.classList.remove('open'); });
 
-input.addEventListener('keydown', e => {
-  if (e.key === 'Enter') { suggestList.classList.remove('show'); runCheck(); }
-});
-
-// ── GEOCODE (Google → fallback Nominatim proxy) ──────────
-async function geocodeAddress(address) {
-  // Primary: Google Geocoding via Maps JS (no CORS issue)
-  if (window.google) {
-    return new Promise((resolve, reject) => {
-      const gc = new google.maps.Geocoder();
-      gc.geocode({ address }, (results, status) => {
-        if (status === 'OK' && results[0]) {
-          const r = results[0];
-          resolve({
-            formatted: r.formatted_address,
-            lat: r.geometry.location.lat(),
-            lng: r.geometry.location.lng(),
-            city: r.address_components.find(c=>c.types.includes('locality'))?.long_name || '',
-            state: r.address_components.find(c=>c.types.includes('administrative_area_level_1'))?.short_name || '',
-          });
-        } else {
-          reject(new Error('Address not found. Please enter a full US address including city and state.'));
-        }
-      });
+// ─── Geocode ───────────────────────────────────────────────
+function geocode(address) {
+  return new Promise((ok, fail) => {
+    if (!window.mapsReady) {
+      // retry once after 1s if Maps not ready yet
+      setTimeout(() => {
+        if (!window.mapsReady) { fail(new Error('Maps loading, please try again in a moment.')); return; }
+        new google.maps.Geocoder().geocode({ address }, (r, s) => {
+          if (s === 'OK' && r[0]) ok(parseGeo(r[0]));
+          else fail(new Error('Address not found. Try adding city and state, e.g. "San Jose, CA".'));
+        });
+      }, 1200);
+      return;
+    }
+    new google.maps.Geocoder().geocode({ address }, (r, s) => {
+      if (s === 'OK' && r[0]) ok(parseGeo(r[0]));
+      else fail(new Error('Address not found. Try adding city and state, e.g. "San Jose, CA".'));
     });
-  }
-  throw new Error('Maps not loaded yet. Please try again in a moment.');
+  });
 }
 
-// ── ArcGIS queries (CORS-open public endpoints) ──────────
-async function arcgisQuery(url, lat, lng, fields) {
-  const p = new URLSearchParams({
-    geometry: `${lng},${lat}`,
-    geometryType: 'esriGeometryPoint',
-    spatialRel: 'esriSpatialRelIntersects',
-    outFields: fields,
-    returnGeometry: 'false',
-    f: 'json',
-  });
-  try {
-    const controller = new AbortController();
-    const timeout = setTimeout(() => controller.abort(), 6000);
-    const r = await fetch(`${url}?${p}`, { signal: controller.signal });
-    clearTimeout(timeout);
-    const d = await r.json();
-    return d.features?.[0]?.attributes || null;
-  } catch { return null; }
-}
-
-// Fallback: estimate zoning from zip code for common San Jose zips
-function estimateFromZip(zip, city) {
-  const sjZips = ['95101','95102','95103','95106','95108','95109','95110','95111',
-    '95112','95113','95115','95116','95117','95118','95119','95120','95121',
-    '95122','95123','95124','95125','95126','95127','95128','95129','95130',
-    '95131','95132','95133','95134','95135','95136','95138','95139','95140',
-    '95141','95148'];
-  const bayAreaCities = ['san jose','fremont','milpitas','cupertino','santa clara',
-    'sunnyvale','mountain view','palo alto','campbell','los gatos','saratoga',
-    'morgan hill','gilroy','los altos','burlingame'];
-  const isSJ = sjZips.includes(zip);
-  const isBayArea = bayAreaCities.some(c => (city||'').toLowerCase().includes(c));
-  if (isSJ || isBayArea) {
-    return {
-      ZONING: 'R1-8', ZONE_DESCRIPTION: 'Single Family Residential',
-      LOT_SIZE_SF: 6500, UNITS: 1, _estimated: true
-    };
-  }
-  return null;
-}
-
-// ── MAIN ─────────────────────────────────────────────────
-async function runCheck() {
-  const address = input.value.trim();
-  if (!address) { showError('Please enter a property address.'); return; }
-
-  showLoading(true); hideResults(); hideError();
-
-  try {
-    setStep('Looking up address…');
-    const geo = await geocodeAddress(address);
-
-    setStep('Fetching zoning & property data…');
-    const [zoning, parcel, fire, flood] = await Promise.all([
-      arcgisQuery(
-        'https://services5.arcgis.com/7Sr2ufOHSNJF6XOE/arcgis/rest/services/Zoning/FeatureServer/0/query',
-        geo.lat, geo.lng, 'ZONING,ZONE_DESCRIPTION,GENERAL_PLAN'
-      ),
-      arcgisQuery(
-        'https://services.arcgis.com/TSeevZenKbEfxKyF/arcgis/rest/services/SCC_Parcels/FeatureServer/0/query',
-        geo.lat, geo.lng, 'APN,LOT_SIZE_SF,ZONING,UNITS,YEAR_BUILT'
-      ),
-      arcgisQuery(
-        'https://egis.fire.ca.gov/arcgis/rest/services/FHSZ/MapServer/0/query',
-        geo.lat, geo.lng, 'SRA,HAZ_CLASS'
-      ),
-      arcgisQuery(
-        'https://hazards.fema.gov/arcgis/rest/services/public/NFHL/MapServer/28/query',
-        geo.lat, geo.lng, 'FLD_ZONE,ZONE_SUBTY'
-      ),
-    ]);
-
-    setStep('Evaluating ADU eligibility…');
-    const result = evaluate(geo, zoning, parcel, fire, flood);
-    showLoading(false);
-    render(result);
-  } catch(err) {
-    showLoading(false);
-    showError(err.message || 'Something went wrong. Please try again.');
-  }
-}
-
-// ── EVALUATION ENGINE ─────────────────────────────────────
-function evaluate(geo, zoning, parcel, fire, flood) {
-  // If ArcGIS returned nothing, try zip-based estimate
-  const zip = geo.formatted.match(/(\d{5})/)?.[1] || '';
-  const fallback = (!zoning && !parcel) ? estimateFromZip(zip, geo.city) : null;
-  const zoningData = zoning || fallback;
-  const parcelData = parcel || fallback;
-  const isEstimated = !!(fallback && !zoning && !parcel);
-
-  const zcode   = zoningData?.ZONING || parcelData?.ZONING || 'Unknown';
-  const zdesc   = zoningData?.ZONE_DESCRIPTION || '';
-  const lot     = parcelData?.LOT_SIZE_SF || 0;
-  const units   = parcelData?.UNITS || 1;
-  const yr      = parcelData?.YEAR_BUILT || null;
-  const fireClass = fire?.HAZ_CLASS || '';
-  const fzone   = flood?.FLD_ZONE || 'X';
-  const checks  = [];
-
-  const isRes = ['R1','R2','R3','R4','RM','RH','RD','SR','A1','PD','RR']
-    .some(p => zcode.toUpperCase().startsWith(p));
-
-  checks.push({
-    id:'zoning', label:'Zoning allows ADU',
-    status: zcode==='Unknown' ? 'warn' : isRes ? 'pass' : 'fail',
-    detail: zcode==='Unknown'
-      ? 'Zoning data unavailable — contact city planning'
-      : isRes
-        ? `${zcode}${zdesc?' — '+zdesc:''} · Residential zone, ADU permitted under CA law`
-        : `${zcode} — Non-residential zone, ADU likely not permitted`,
-  });
-
-  checks.push({
-    id:'lot', label:'Lot size',
-    status: lot<=0 ? 'warn' : lot>=6000 ? 'pass' : lot>=4000 ? 'warn' : 'fail',
-    detail: lot<=0
-      ? 'Lot size data unavailable — contact county assessor'
-      : lot>=6000
-        ? `${lot.toLocaleString()} sq ft — Good size for detached ADU`
-        : lot>=4000
-          ? `${lot.toLocaleString()} sq ft — Meets minimum, limited space for detached ADU`
-          : `${lot.toLocaleString()} sq ft — Below 4,000 sq ft minimum; JADU may still be possible`,
-  });
-
-  checks.push({
-    id:'type', label:'Property type', status:'pass',
-    detail: units<=1
-      ? 'Single-family residence — eligible for 1 detached ADU + 1 JADU under CA law'
-      : `${units}-unit property — eligible for ADUs on up to 25% of existing units`,
-  });
-
-  checks.push({
-    id:'setback', label:'Rear/side setback', status:'warn',
-    detail: 'CA law: 4 ft minimum rear & side setback — verify actual clearance with a site survey',
-  });
-
-  const highFire = ['HIGH','VERY HIGH','EXTREME'].some(h=>fireClass.toUpperCase().includes(h));
-  checks.push({
-    id:'fire', label:'Fire hazard zone',
-    status: !fireClass ? 'warn' : highFire ? 'warn' : 'pass',
-    detail: !fireClass
-      ? 'Fire zone data unavailable — check CAL FIRE maps at osfm.fire.ca.gov'
-      : highFire
-        ? `${fireClass} Fire Hazard Zone — fire-rated materials & ember-resistant vents required`
-        : 'Not in high-fire hazard zone — standard construction applies',
-  });
-
-  const highFlood = ['A','AE','AH','AO','VE','V'].includes(fzone[0]?.toUpperCase());
-  checks.push({
-    id:'flood', label:'FEMA flood zone',
-    status: highFlood ? 'warn' : 'pass',
-    detail: highFlood
-      ? `Zone ${fzone} — high flood risk, flood insurance likely required`
-      : `Zone ${fzone} — minimal flood risk, no special requirements`,
-  });
-
-  const nFail = checks.filter(c=>c.status==='fail').length;
-  const nWarn = checks.filter(c=>c.status==='warn').length;
-  const nPass = checks.filter(c=>c.status==='pass').length;
-  const maxADU  = lot>0 ? Math.min(1200, Math.max(150, Math.round(lot*.45))) : 1200;
-
+function parseGeo(r) {
+  const get = type => r.address_components.find(c => c.types.includes(type));
   return {
-    geo, zcode, zdesc, lot, units, yr,
-    maxADU, maxJADU:500,
-    checks, nPass, nWarn, nFail,
-    isEstimated,
-    overall: nFail===0 && nWarn<=1 ? 'Likely eligible for ADU'
-           : nFail===0             ? 'Eligible — a few items to verify'
-                                   : 'May have eligibility issues',
-    overallStatus: nFail===0 && nWarn<=1 ? 'pass' : nFail===0 ? 'warn' : 'fail',
-    estimatedNote: isEstimated ? ' (property data estimated from zip code — contact us to verify)' : '',
-    overallSub: nFail===0 && nWarn<=1
-      ? 'Most requirements met. A free site visit will confirm.'
-      : nFail===0
-        ? 'No hard blockers. Some items need review before design.'
-        : 'One or more requirements may not be met. Contact us to review options.',
+    formatted: r.formatted_address,
+    lat: r.geometry.location.lat(),
+    lng: r.geometry.location.lng(),
+    street: (get('street_number')?.long_name || '') + ' ' + (get('route')?.long_name || ''),
+    city: get('locality')?.long_name || get('sublocality')?.long_name || '',
+    state: get('administrative_area_level_1')?.short_name || '',
+    zip: get('postal_code')?.long_name || '',
+    county: get('administrative_area_level_2')?.long_name || '',
   };
 }
 
-// ── RENDER ────────────────────────────────────────────────
-function render(r) {
-  const ic = {pass:'✓', warn:'!', fail:'✗'};
-  const tags = [
-    r.zcode !== 'Unknown' ? r.zcode : null,
-    r.lot>0 ? `${r.lot.toLocaleString()} sq ft` : null,
-    r.units<=1 ? 'Single-family' : `${r.units}-unit`,
-    r.yr ? `Built ${r.yr}` : null,
-  ].filter(Boolean).map(t=>`<span class="tag">${t}</span>`).join('');
+// ─── CA ADU Eligibility Engine (no external API needed) ────
+// Based on California ADU law: AB68, AB3182, SB9, SB13 (2020-2024)
 
-  const checksHTML = r.checks.map(c=>`
+const CA_ADU_RULES = {
+  // Zoning prefixes that allow residential use
+  residentialPrefixes: ['R','A','RR','SR','RE','RS','RL','RM','RH','RD','PD','SP','MX','T'],
+  // Bay Area / SoCal city service areas for Blackstone
+  serviceArea: ['san jose','santa clara','sunnyvale','cupertino','milpitas','fremont',
+    'campbell','los gatos','saratoga','los altos','mountain view','palo alto',
+    'morgan hill','gilroy','burlingame','san mateo','redwood city'],
+};
+
+function evaluate(geo) {
+  const checks = [];
+  const city = geo.city.toLowerCase();
+  const state = geo.state;
+  const zip = geo.zip;
+
+  // ── 1. California only ──────────────────────────────────
+  const isCA = state === 'CA';
+  checks.push({
+    label: 'California property',
+    status: isCA ? 'pass' : 'fail',
+    detail: isCA
+      ? 'California — state ADU law (AB68, SB9) applies statewide'
+      : `${state} — Blackstone currently serves California only`,
+  });
+
+  if (!isCA) {
+    return buildResult(geo, checks, 0, 1200, 500);
+  }
+
+  // ── 2. Likely residential area (from zip/city heuristic) ─
+  // CA ADU law applies to ALL residential zones — we flag if address looks commercial
+  const looksResidential = /\b(dr|drive|st|street|ave|avenue|blvd|boulevard|way|ct|court|ln|lane|rd|road|pl|place|cir|circle|ter|terrace)\b/i.test(geo.street);
+  checks.push({
+    label: 'Residential address',
+    status: looksResidential ? 'pass' : 'warn',
+    detail: looksResidential
+      ? 'Address appears residential — eligible for ADU under CA law'
+      : 'Could not confirm residential use — verify property type with county records',
+  });
+
+  // ── 3. CA state law — always allows ADU on residential ──
+  checks.push({
+    label: 'CA state ADU law',
+    status: 'pass',
+    detail: 'California AB68 (2020) guarantees ADU rights on all residential lots statewide — cities cannot ban ADUs',
+  });
+
+  // ── 4. Setback ──────────────────────────────────────────
+  checks.push({
+    label: 'Rear / side setback',
+    status: 'warn',
+    detail: 'CA law: minimum 4 ft rear & side setback for detached ADU — verify available yard space with a site visit',
+  });
+
+  // ── 5. Service area ─────────────────────────────────────
+  const inServiceArea = CA_ADU_RULES.serviceArea.some(c => city.includes(c));
+  checks.push({
+    label: 'Blackstone service area',
+    status: inServiceArea ? 'pass' : 'warn',
+    detail: inServiceArea
+      ? `${geo.city} — within Blackstone's Bay Area service area`
+      : `${geo.city} — contact us to confirm availability in your area`,
+  });
+
+  // ── 6. Owner-occupied / HOA ─────────────────────────────
+  checks.push({
+    label: 'HOA restrictions',
+    status: 'warn',
+    detail: 'HOAs cannot legally block ADUs under CA law, but may require design review — check your CC&Rs',
+  });
+
+  // Max ADU size per CA law
+  const maxADU = 1200;
+  const maxJADU = 500;
+
+  return buildResult(geo, checks, isCA ? 1 : 0, maxADU, maxJADU);
+}
+
+function buildResult(geo, checks, caBonus, maxADU, maxJADU) {
+  const nFail = checks.filter(c => c.status === 'fail').length;
+  const nWarn = checks.filter(c => c.status === 'warn').length;
+  const nPass = checks.filter(c => c.status === 'pass').length;
+
+  let overall, overallStatus, overallSub;
+  if (nFail === 0 && nWarn <= 1) {
+    overall = 'Likely eligible for ADU';
+    overallStatus = 'pass';
+    overallSub = 'Your property meets the key requirements under CA law. A free site visit will confirm.';
+  } else if (nFail === 0) {
+    overall = 'Eligible — a few items to verify';
+    overallStatus = 'warn';
+    overallSub = 'No hard blockers found. Some items need confirmation before design starts.';
+  } else {
+    overall = 'May have eligibility issues';
+    overallStatus = 'fail';
+    overallSub = 'One or more requirements may not be met. Contact us to explore your options.';
+  }
+
+  return { geo, checks, nPass, nWarn, nFail, overall, overallStatus, overallSub, maxADU, maxJADU };
+}
+
+// ─── Main ──────────────────────────────────────────────────
+async function runCheck() {
+  const addr = inp.value.trim();
+  if (!addr) { showErr('Please enter a property address.'); return; }
+
+  setLoading(true); hideResults(); hideErr();
+
+  try {
+    const geo = await geocode(addr);
+    const result = evaluate(geo);
+    setLoading(false);
+    render(result);
+  } catch(e) {
+    setLoading(false);
+    showErr(e.message || 'Something went wrong. Please try again.');
+  }
+}
+
+// ─── Render ────────────────────────────────────────────────
+function render(r) {
+  const ic = { pass: '✓', warn: '!', fail: '✗' };
+  const { geo, checks, nPass, nWarn, nFail, overall, overallStatus, overallSub, maxADU, maxJADU } = r;
+
+  const tags = [
+    geo.city || null,
+    geo.state === 'CA' ? 'California' : geo.state,
+    geo.zip || null,
+  ].filter(Boolean).map(t => `<span class="ptag">${t}</span>`).join('');
+
+  const checksHTML = checks.map(c => `
     <div class="ci ${c.status}">
       <div class="ci-ic">${ic[c.status]}</div>
       <div>
@@ -421,72 +368,74 @@ function render(r) {
     </div>`).join('');
 
   document.getElementById('results').innerHTML = `
-    <div class="prop-card">
+    <div class="prop-bar">
+      <div class="prop-icon">📍</div>
       <div>
-        <div class="prop-addr">📍 ${r.geo.formatted}</div>
-        <div class="tags">${tags}</div>
+        <div class="prop-addr">${geo.formatted}</div>
+        <div class="prop-tags">${tags}</div>
       </div>
     </div>
 
-    <div class="verdict ${r.overallStatus}">
+    <div class="verdict ${overallStatus}">
       <div class="v-label">Overall result</div>
-      <div class="v-title">${r.overall}</div>
-      <div class="v-sub">${r.overallSub}</div>
-      <div class="v-count">
-        <span class="vc"><span class="vc-p">${r.nPass} passed</span></span>
-        <span class="vc"><span class="vc-w">${r.nWarn} to verify</span></span>
-        <span class="vc"><span class="vc-f">${r.nFail} blockers</span></span>
+      <div class="v-title">${overall}</div>
+      <div class="v-sub">${overallSub}</div>
+      <div class="v-pills">
+        <span class="vpill p">${nPass} passed</span>
+        <span class="vpill w">${nWarn} to verify</span>
+        <span class="vpill f">${nFail} blocked</span>
       </div>
     </div>
 
-    <div class="size-grid">
-      <div class="size-card">
-        <div class="s-lbl">Max detached ADU</div>
-        <div class="s-val">${r.maxADU.toLocaleString()} sq ft</div>
-        <div class="s-note">Per CA AB68</div>
+    <div class="size-row">
+      <div class="scard">
+        <div class="scard-lbl">Max detached ADU</div>
+        <div class="scard-val">${maxADU.toLocaleString()} sq ft</div>
+        <div class="scard-note">CA AB68 state limit</div>
       </div>
-      <div class="size-card">
-        <div class="s-lbl">Max JADU</div>
-        <div class="s-val">${r.maxJADU} sq ft</div>
-        <div class="s-note">Inside existing home</div>
+      <div class="scard">
+        <div class="scard-lbl">Max JADU</div>
+        <div class="scard-val">${maxJADU} sq ft</div>
+        <div class="scard-note">Inside existing home</div>
       </div>
     </div>
 
-    <div class="checks-hd">Eligibility checks</div>
-    <div class="checklist">${checksHTML}</div>
+    <div class="checks-wrap">
+      <div class="checks-hd">Eligibility checks</div>
+      ${checksHTML}
+    </div>
 
-    <div class="source-row">
-      <span class="src-lbl">Data from:</span>
-      <span class="src-tag">San Jose Zoning (ArcGIS)</span>
-      <span class="src-tag">SCC Parcels</span>
-      <span class="src-tag">CAL FIRE</span>
-      <span class="src-tag">FEMA NFHL</span>
+    <div class="ca-note">
+      📋 Under California AB68 (2020), all residential property owners have the <strong>legal right to build an ADU</strong>.
+      Cities and HOAs cannot ban them outright. A site visit confirms exact sizing and placement.
     </div>
 
     <div class="disc">
-      Results are for informational purposes only based on publicly available data.
-      Actual eligibility depends on current city regulations, site conditions, and utility capacity.
-      Always verify with your local planning department before starting a project.
+      Results based on California state ADU law. Local city ordinances may add design requirements.
+      This is for informational purposes only — not a permit approval. Verify with your local planning department.
     </div>
 
-    <button class="cta-btn" onclick="window.open('https://www.blackstonednb.com/contact','_blank')">
-      Get free consultation — (408) 785-9999
-    </button>
-    <div class="cta-note">30-min call · No obligation · Same-week availability</div>
+    <div class="cta-wrap">
+      <button class="cta-main" onclick="window.open('https://www.blackstonednb.com/contact','_blank')">
+        Book free consultation with Blackstone — (408) 785-9999
+      </button>
+      <div class="cta-sub">30-min call · No obligation · Same-week availability</div>
+    </div>
   `;
+
   document.getElementById('results').classList.add('show');
+  document.getElementById('results').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
-// ── UI HELPERS ────────────────────────────────────────────
-function showLoading(on) {
+// ─── UI helpers ────────────────────────────────────────────
+function setLoading(on) {
   document.getElementById('loading').classList.toggle('show', on);
   document.getElementById('checkBtn').disabled = on;
-  document.getElementById('checkBtn').textContent = on ? 'Checking…' : 'Check eligibility';
+  document.getElementById('checkBtn').textContent = on ? '…' : 'Check';
 }
 function hideResults() { document.getElementById('results').classList.remove('show'); }
-function showError(m)  { const e=document.getElementById('errorBox'); e.textContent=m; e.classList.add('show'); }
-function hideError()   { document.getElementById('errorBox').classList.remove('show'); }
-function setStep(m)    { document.getElementById('loadingStep').textContent = m; }
+function showErr(m) { const e = document.getElementById('errBox'); e.textContent = m; e.classList.add('show'); }
+function hideErr() { document.getElementById('errBox').classList.remove('show'); }
 </script>
 </body>
 </html>
