@@ -232,10 +232,34 @@ async function arcgisQuery(url, lat, lng, fields) {
     f: 'json',
   });
   try {
-    const r = await fetch(`${url}?${p}`);
+    const controller = new AbortController();
+    const timeout = setTimeout(() => controller.abort(), 6000);
+    const r = await fetch(`${url}?${p}`, { signal: controller.signal });
+    clearTimeout(timeout);
     const d = await r.json();
     return d.features?.[0]?.attributes || null;
   } catch { return null; }
+}
+
+// Fallback: estimate zoning from zip code for common San Jose zips
+function estimateFromZip(zip, city) {
+  const sjZips = ['95101','95102','95103','95106','95108','95109','95110','95111',
+    '95112','95113','95115','95116','95117','95118','95119','95120','95121',
+    '95122','95123','95124','95125','95126','95127','95128','95129','95130',
+    '95131','95132','95133','95134','95135','95136','95138','95139','95140',
+    '95141','95148'];
+  const bayAreaCities = ['san jose','fremont','milpitas','cupertino','santa clara',
+    'sunnyvale','mountain view','palo alto','campbell','los gatos','saratoga',
+    'morgan hill','gilroy','los altos','burlingame'];
+  const isSJ = sjZips.includes(zip);
+  const isBayArea = bayAreaCities.some(c => (city||'').toLowerCase().includes(c));
+  if (isSJ || isBayArea) {
+    return {
+      ZONING: 'R1-8', ZONE_DESCRIPTION: 'Single Family Residential',
+      LOT_SIZE_SF: 6500, UNITS: 1, _estimated: true
+    };
+  }
+  return null;
 }
 
 // ── MAIN ─────────────────────────────────────────────────
@@ -281,11 +305,18 @@ async function runCheck() {
 
 // ── EVALUATION ENGINE ─────────────────────────────────────
 function evaluate(geo, zoning, parcel, fire, flood) {
-  const zcode   = zoning?.ZONING || parcel?.ZONING || 'Unknown';
-  const zdesc   = zoning?.ZONE_DESCRIPTION || '';
-  const lot     = parcel?.LOT_SIZE_SF || 0;
-  const units   = parcel?.UNITS || 1;
-  const yr      = parcel?.YEAR_BUILT || null;
+  // If ArcGIS returned nothing, try zip-based estimate
+  const zip = geo.formatted.match(/(\d{5})/)?.[1] || '';
+  const fallback = (!zoning && !parcel) ? estimateFromZip(zip, geo.city) : null;
+  const zoningData = zoning || fallback;
+  const parcelData = parcel || fallback;
+  const isEstimated = !!(fallback && !zoning && !parcel);
+
+  const zcode   = zoningData?.ZONING || parcelData?.ZONING || 'Unknown';
+  const zdesc   = zoningData?.ZONE_DESCRIPTION || '';
+  const lot     = parcelData?.LOT_SIZE_SF || 0;
+  const units   = parcelData?.UNITS || 1;
+  const yr      = parcelData?.YEAR_BUILT || null;
   const fireClass = fire?.HAZ_CLASS || '';
   const fzone   = flood?.FLD_ZONE || 'X';
   const checks  = [];
@@ -356,10 +387,12 @@ function evaluate(geo, zoning, parcel, fire, flood) {
     geo, zcode, zdesc, lot, units, yr,
     maxADU, maxJADU:500,
     checks, nPass, nWarn, nFail,
+    isEstimated,
     overall: nFail===0 && nWarn<=1 ? 'Likely eligible for ADU'
            : nFail===0             ? 'Eligible — a few items to verify'
                                    : 'May have eligibility issues',
     overallStatus: nFail===0 && nWarn<=1 ? 'pass' : nFail===0 ? 'warn' : 'fail',
+    estimatedNote: isEstimated ? ' (property data estimated from zip code — contact us to verify)' : '',
     overallSub: nFail===0 && nWarn<=1
       ? 'Most requirements met. A free site visit will confirm.'
       : nFail===0
